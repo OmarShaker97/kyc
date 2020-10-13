@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-off-set-8">
             <div class="card">
                 
-                <div class="card-body">
+                <div class="card-body bg-dark text-white">
                     <div class="center">
                         <h1 class="card-title">{{ __('Register') }}</h1>
 

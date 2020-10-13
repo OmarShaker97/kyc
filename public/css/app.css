@@ -4983,7 +4983,6 @@ input[type=button].btn-block {
     flex: 1 1 auto;
     min-height: 1px;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.03);
     padding: 1.25rem;
 }
 
