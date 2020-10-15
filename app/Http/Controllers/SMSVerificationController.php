@@ -136,7 +136,8 @@ class SMSVerificationController extends Controller
             flash($e->getMessage())->error();
             return view('auth/verifyphone');
         }
-
+        
+        flash("You have successfully verified your phone number!")->success();
 
         $date = date_create();
         DB::table('users')->where('id', Auth::id())->update(['phone_verified_at'=> date_format($date, 'Y-m-d H:i:s')]);
