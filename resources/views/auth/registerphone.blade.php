@@ -4,14 +4,17 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 col-md-off-set-8">
+            <div class="container">
+                @include('flash::message')
+            </div>
             <div class="card">
-                
+
                 <div class="card-body bg-dark text-white">
                     <div class="center">
                         <h1 class="card-title">{{ __('Register') }}</h1>
 
                         <h5>Please fill in the fields below</h5>
-                        
+
 
                         <form method="POST" action="{{ route('sms.update', Auth::user()) }}">
                             @csrf
@@ -45,5 +48,8 @@
             </div>
         </div>
     </div>
+    <script>
+        $('#flash-overlay-modal').modal();
+    </script>
 </div>
 @endsection

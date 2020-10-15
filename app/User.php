@@ -41,4 +41,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return ! is_null($this->phone_verified_at);
     }
+
+    public function hasPhoneNumber()
+    {
+        return ! is_null($this->phone);
+    }
 }

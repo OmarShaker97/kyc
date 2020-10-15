@@ -86,19 +86,23 @@ class SMSVerificationController extends Controller
     public function update(Request $request, $id)
     {
 
-        // dd($request->phone);
-        
-        $verification = Nexmo::verify()->start([
-            'number' => $request->phone,
-            'brand' => 'Phone Verification',
-        ]);
+        try {
 
-        session(['nexmo_request_id' => $verification->getRequestId()]);
+            $verification = Nexmo::verify()->start([
+                'number' => $request->phone,
+                'brand' => 'Phone Verification',
+            ]);
 
-        $user = Auth::user();
-        $user->phone = $request->phone;
-        $user->save();
-        return redirect()->route('sms.verifyphone');
+            session(['nexmo_request_id' => $verification->getRequestId()]);
+
+            $user = Auth::user();
+            $user->phone = $request->phone;
+            $user->save();
+            return redirect()->route('sms.verifyphone');
+        } catch (\Exception $e) {
+            flash($e->getMessage())->error();
+            return redirect()->route('sms.index');
+        }
     }
 
     /**
@@ -117,15 +121,22 @@ class SMSVerificationController extends Controller
     }
 
     public function onClickVerify(Request $request){
+        try {
+            $this->validate($request, [
+                'code' => 'size:4'
+            ]);
 
-        $this->validate($request, [
-            'code' => 'size:4'
-        ]);
+            $request_id = session('nexmo_request_id');
+            $verification = new \Nexmo\Verify\Verification($request_id);
 
-        $request_id = session('nexmo_request_id');
-        $verification = new \Nexmo\Verify\Verification($request_id);
+            Nexmo::verify()->check($verification, $request->code);
 
-        Nexmo::verify()->check($verification, $request->code);
+        } catch (\Exception $e) {
+
+            flash($e->getMessage())->error();
+            return view('auth/verifyphone');
+        }
+
 
         $date = date_create();
         DB::table('users')->where('id', Auth::id())->update(['phone_verified_at'=> date_format($date, 'Y-m-d H:i:s')]);

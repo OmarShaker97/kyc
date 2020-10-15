@@ -23,7 +23,9 @@ Auth::routes(['verify'=>true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/sms/verifyphone', 'SMSVerificationController@verifyPhone')->name('sms.verifyphone');
+Route::get('/sms/verifyphone', 'SMSVerificationController@verifyPhone')
+    ->name('sms.verifyphone')
+    ->middleware('hasPhoneNumber');
 
 Route::put('/sms/verifyphone', 'SMSVerificationController@onClickVerify')->name('sms.onClickVerify');
 
